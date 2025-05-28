@@ -140,6 +140,17 @@
   </style>
 </head>
 <body>
+<script>
+  // Step 1: Read athlete_id from URL
+  const urlParams = new URLSearchParams(window.location.search);
+  const athleteId = urlParams.get('athlete_id');
+
+  // Step 2: If found, store it for future use
+  if (athleteId) {
+    localStorage.setItem("athlete_id", athleteId);
+    console.log("Stored athlete_id:", athleteId);
+  }
+</script>
 
   <header>
     <!-- Firebase Web SDK -->
