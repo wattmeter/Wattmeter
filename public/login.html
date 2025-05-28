@@ -2,10 +2,10 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Log In — $WATT</title>
 
-  <!-- CSP & Referrer -->
+  <!-- Content Security Policy -->
   <meta http-equiv="Content-Security-Policy" content="
     default-src 'self';
     script-src 'self' https://cdn.tailwindcss.com;
@@ -13,85 +13,81 @@
     font-src 'self' https://fonts.gstatic.com;
     img-src 'self' data:;
     connect-src 'self' https://www.googleapis.com https://*.firebaseio.com;
-  ">
-  <meta name="referrer" content="no-referrer"/>
+  " />
+  <meta name="referrer" content="no-referrer" />
 
-  <!-- Tailwind & Google Font -->
+  <!-- Tailwind CSS -->
   <script src="https://cdn.tailwindcss.com" crossorigin="anonymous"></script>
-  <link rel="preconnect" href="https://fonts.googleapis.com"/>
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
-  <link href="https://fonts.googleapis.com/css2?family=Rubik:wght@400;700&display=swap" rel="stylesheet" crossorigin="anonymous"/>
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Rubik:wght@400;700&display=swap" rel="stylesheet" crossorigin="anonymous" />
 
   <style nonce="rnd123">
     body { font-family: 'Rubik', sans-serif; }
   </style>
 </head>
-<body class="min-h-screen bg-gradient-to-br from-violet-500 to-indigo-600 text-gray-100 flex items-center">
-  <div class="container mx-auto px-6 py-12">
+
+<body class="min-h-screen bg-gradient-to-br from-violet-500 to-indigo-600 text-gray-100 flex items-center justify-center">
+  <div class="w-full max-w-md px-6">
     <!-- Header -->
-    <header class="text-center mb-12">
-      <h1 class="text-4xl font-bold mb-4">Ride. Earn. Repeat.</h1>
+    <header class="text-center mb-8">
+      <h1 class="text-4xl font-bold mb-2">Ride. Earn. Repeat.</h1>
       <p class="text-lg opacity-90">Log in to track your $WATT balance and rides.</p>
     </header>
 
     <!-- Login Card -->
-    <div class="max-w-md mx-auto bg-white bg-opacity-10 p-8 rounded-2xl shadow-lg backdrop-blur-md">
-      <h2 class="text-3xl font-bold mb-6 text-center text-white">Log In to $WATT</h2>
+    <div class="bg-white bg-opacity-10 p-8 rounded-2xl shadow-lg backdrop-blur-md">
+      <h2 class="text-2xl font-semibold mb-6 text-center text-white">Log In to $WATT</h2>
 
-      <!-- CSRF Generator -->
+      <!-- CSRF Token Generator -->
       <script>
         document.addEventListener('DOMContentLoaded', () => {
           const token = crypto.randomUUID();
           document.cookie = `csrfToken=${token}; Path=/; Secure; SameSite=Strict`;
-          document.querySelector('input[name="csrfToken"]').value = token;
+          const hidden = document.querySelector('input[name="csrfToken"]');
+          if (hidden) hidden.value = token;
         });
       </script>
 
-      <form action="/.netlify/functions/login" method="POST" class="space-y-6">
-        <!-- Email Field -->
+      <form action="/.netlify/functions/login" method="POST" class="space-y-5">
+        <!-- Email -->
         <div class="relative">
-          <input
-            type="email" id="email" name="email" placeholder=" " required
-            class="peer w-full px-4 py-3 rounded-lg bg-white bg-opacity-20 placeholder-transparent focus:outline-none focus:ring-2 focus:ring-pink-400 transition text-white"
-          />
-          <label
-            for="email"
+          <input type="email" id="email" name="email" placeholder=" " required
+            class="peer w-full px-4 py-3 rounded-lg bg-white bg-opacity-20 placeholder-transparent focus:outline-none focus:ring-2 focus:ring-pink-400 transition text-white" />
+          <label for="email"
             class="absolute left-4 top-1/2 -translate-y-1/2 text-gray-200 pointer-events-none transition-all
                    peer-placeholder-shown:top-1/2 peer-placeholder-shown:text-base peer-placeholder-shown:text-gray-200
-                   peer-focus:top-2 peer-focus:-translate-y-0 peer-focus:text-sm peer-focus:text-pink-400"
-          >Email</label>
+                   peer-focus:top-2 peer-focus:-translate-y-0 peer-focus:text-sm peer-focus:text-pink-400">
+            Email
+          </label>
         </div>
 
-        <!-- Password Field + Toggle -->
+        <!-- Password -->
         <div class="relative">
-          <input
-            type="password" id="password" name="password" placeholder=" " required
-            class="peer w-full px-4 py-3 rounded-lg bg-white bg-opacity-20 placeholder-transparent focus:outline-none focus:ring-2 focus:ring-pink-400 transition text-white"
-          />
-          <label
-            for="password"
+          <input type="password" id="password" name="password" placeholder=" " required
+            class="peer w-full px-4 py-3 rounded-lg bg-white bg-opacity-20 placeholder-transparent focus:outline-none focus:ring-2 focus:ring-pink-400 transition text-white" />
+          <label for="password"
             class="absolute left-4 top-1/2 -translate-y-1/2 text-gray-200 pointer-events-none transition-all
                    peer-placeholder-shown:top-1/2 peer-placeholder-shown:text-base peer-placeholder-shown:text-gray-200
-                   peer-focus:top-2 peer-focus:-translate-y-0 peer-focus:text-sm peer-focus:text-pink-400"
-          >Password</label>
-          <button
-            type="button" id="togglePassword"
-            class="absolute right-4 top-1/2 -translate-y-1/2 text-gray-200 hover:text-white transition"
-          >👁️</button>
+                   peer-focus:top-2 peer-focus:-translate-y-0 peer-focus:text-sm peer-focus:text-pink-400">
+            Password
+          </label>
+          <button type="button" id="togglePassword"
+            class="absolute right-4 top-1/2 -translate-y-1/2 text-gray-200 hover:text-white transition">
+            👁️
+          </button>
         </div>
 
-        <input type="hidden" name="csrfToken" value=""/>
+        <input type="hidden" name="csrfToken" value="" />
 
-        <!-- Submit -->
-        <button
-          type="submit"
-          class="w-full py-3 bg-pink-500 rounded-xl text-white font-semibold transition-transform transform hover:scale-105 hover:shadow-lg"
-        >
+        <button type="submit"
+          class="w-full py-3 bg-pink-500 rounded-xl text-white font-semibold transition-transform transform hover:scale-105 hover:shadow-lg">
           Log In
         </button>
       </form>
 
-      <!-- Divider -->
+      <!-- Or Divider -->
       <div class="my-6 flex items-center text-gray-300">
         <span class="flex-grow border-t border-gray-300"></span>
         <span class="mx-4">or</span>
@@ -99,25 +95,24 @@
       </div>
 
       <!-- Strava Connect -->
-      <a
-        href="https://www.strava.com/oauth/authorize?client_id=161922&response_type=code&redirect_uri=https://melodious-queijadas-d749fe.netlify.app/.netlify/functions/strava-auth&approval_prompt=auto&scope=activity:read_all"
-        class="block w-full text-center py-3 bg-white bg-opacity-20 rounded-xl text-white font-medium hover:bg-opacity-30 transition"
-      >
+      <a href="https://www.strava.com/oauth/authorize?client_id=161922&response_type=code&redirect_uri=https://melodious-queijadas-d749fe.netlify.app/.netlify/functions/strava-auth&approval_prompt=auto&scope=activity:read_all"
+         class="block w-full text-center py-3 bg-white bg-opacity-20 rounded-xl text-white font-medium hover:bg-opacity-30 transition">
         🚴 Connect with Strava
       </a>
     </div>
   </div>
 
-  <!-- Password Toggle Script -->
   <script>
     document.addEventListener('DOMContentLoaded', () => {
       const pwd = document.getElementById('password');
       const btn = document.getElementById('togglePassword');
-      btn.addEventListener('click', () => {
-        const show = pwd.type === 'password';
-        pwd.type = show ? 'text' : 'password';
-        btn.textContent = show ? '🙈' : '👁️';
-      });
+      if (pwd && btn) {
+        btn.addEventListener('click', () => {
+          const show = pwd.type === 'password';
+          pwd.type = show ? 'text' : 'password';
+          btn.textContent = show ? '🙈' : '👁️';
+        });
+      }
     });
   </script>
 </body>
