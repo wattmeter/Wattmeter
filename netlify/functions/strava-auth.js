@@ -43,7 +43,7 @@ exports.handler = async function(event, context) {
       totalWattHours += (avgWatts * duration) / 3600;
     });
 
-    const totalWATT = (totalWattHours / 1000).toFixed(2); // Updated conversion
+    const totalWATT = (totalWattHours / 1000).toFixed(2); // conversion rate
 
     // Step 3: Store in Firestore
     const ref = db.collection('users').doc(String(athlete_id));
@@ -55,7 +55,7 @@ exports.handler = async function(event, context) {
       activities_count: activities.length
     });
 
-    // Step 4: Redirect back to site with athlete ID
+    // Step 4: Redirect back to front-end
     return {
       statusCode: 302,
       headers: {
