@@ -108,6 +108,35 @@
     transform: translateY(0);
   }
 }
+   .calculator {
+  background: #1c1c1c;
+  padding: 2rem;
+  border-radius: 10px;
+  margin-top: 2rem;
+  text-align: center;
+}
+.calculator input {
+  padding: 0.7rem;
+  font-size: 1rem;
+  width: 250px;
+  margin-right: 1rem;
+  border: none;
+  border-radius: 5px;
+}
+.calculator button {
+  padding: 0.7rem 1.5rem;
+  background: var(--primary);
+  color: black;
+  border: none;
+  border-radius: 5px;
+  font-weight: bold;
+  cursor: pointer;
+}
+#result {
+  margin-top: 1.5rem;
+  font-size: 1.2rem;
+  color: var(--primary);
+} 
   </style>
 </head>
 <body>
@@ -144,7 +173,17 @@
     </div>
   </div>
 </section>
+<section class="calculator">
+  <h2>Wattage-to-$WATT Calculator</h2>
+  <p>Enter your total ride output (in watt-hours) to see how much $WATT you could earn.</p>
 
+  <form id="wattForm">
+    <input type="number" id="wattHours" placeholder="Enter watt-hours (Wh)" required />
+    <button type="submit">Calculate</button>
+  </form>
+
+  <div id="result"></div>
+</section>
   <section class="leaderboard">
     <h3>Top Riders This Week (Demo)</h3>
     <ol>
@@ -164,6 +203,23 @@
   <footer>
     <p>🔥 $WATT is built for the streets. © 2025 Powered by People.</p>
   </footer>
+<script>
+  const form = document.getElementById('wattForm');
+  const resultDiv = document.getElementById('result');
 
+  form.addEventListener('submit', function(e) {
+    e.preventDefault();
+    const wh = parseFloat(document.getElementById('wattHours').value);
+    if (isNaN(wh) || wh <= 0) {
+      resultDiv.innerText = 'Please enter a valid watt-hour value.';
+      return;
+    }
+
+    // Example rate: 10Wh = 1 $WATT
+    const rate = 10;
+    const earned = (wh / rate).toFixed(2);
+    resultDiv.innerText = `💰 You would earn approximately ${earned} $WATT`;
+  });
+</script>
 </body>
 </html>
