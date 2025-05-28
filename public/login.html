@@ -5,27 +5,34 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Log In — $WATT</title>
 
-  <!-- CSP & Referrer -->
-  <meta http-equiv="Content-Security-Policy" content="
-    default-src 'self';
-    script-src 'self' https://cdn.tailwindcss.com;
-    style-src 'self' https://fonts.googleapis.com https://cdn.tailwindcss.com;
-    font-src 'self' https://fonts.gstatic.com;
-    img-src 'self' data:;
-    connect-src 'self' https://www.googleapis.com https://*.firebaseio.com;
-  " />
+  <!-- Strict—but working—CSP -->
+  <meta http-equiv="Content-Security-Policy"
+        content="
+          default-src 'self';
+          script-src  'self' 'nonce-rnd123';
+          style-src   'self' https://fonts.googleapis.com https://cdn.jsdelivr.net;
+          font-src    'self' https://fonts.gstatic.com;
+          img-src     'self' data:;
+          connect-src 'self' https://www.googleapis.com https://*.firebaseio.com;
+        " />
   <meta name="referrer" content="no-referrer" />
 
-  <!-- Tailwind CSS & Google Font -->
-  <script src="https://cdn.tailwindcss.com" crossorigin="anonymous"></script>
+  <!-- Static Tailwind build (no eval, plays nice with CSP) -->
+  <link rel="stylesheet"
+        href="https://cdn.jsdelivr.net/npm/tailwindcss@3.4.4/dist/tailwind.min.css" />
+
+  <!-- Google Font -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Rubik:wght@400;700&display=swap" rel="stylesheet" crossorigin="anonymous" />
+  <link href="https://fonts.googleapis.com/css2?family=Rubik:wght@400;700&display=swap"
+        rel="stylesheet"
+        crossorigin="anonymous" />
 
-  <style nonce="rnd123">
+  <style>
     body { font-family: 'Rubik', sans-serif; }
   </style>
 </head>
+
 <body class="min-h-screen bg-gradient-to-br from-violet-500 to-indigo-600 text-gray-100 flex items-center justify-center">
   <div class="w-full max-w-md px-6">
     <!-- Header -->
@@ -35,53 +42,47 @@
     </header>
 
     <!-- Login Card -->
-    <div class="max-w-md mx-auto p-8 bg-gradient-to-br from-purple-600 to-pink-500 bg-opacity-20 rounded-2xl shadow-lg backdrop-blur-md">
+    <div class="bg-gradient-to-br from-purple-600 to-pink-500 bg-opacity-25 p-8 rounded-2xl shadow-lg backdrop-blur-md">
       <h2 class="text-2xl font-semibold mb-6 text-center text-white">Log In to $WATT</h2>
 
-      <!-- CSRF Generator -->
-      <script>
-        document.addEventListener('DOMContentLoaded', () => {
-          const token = crypto.randomUUID();
-          document.cookie = `csrfToken=${token}; Path=/; Secure; SameSite=Strict`;
-          const hidden = document.querySelector('input[name="csrfToken"]');
-          if (hidden) hidden.value = token;
-        });
-      </script>
-
       <form action="/.netlify/functions/login" method="POST" class="space-y-5">
-        <!-- Email Field -->
+        <!-- Email -->
         <div class="relative">
-          <input type="email" id="email" name="email" placeholder=" " required
-            class="peer w-full px-4 py-3 rounded-lg bg-white bg-opacity-20 placeholder-transparent focus:outline-none focus:ring-2 focus:ring-pink-400 transition text-white" />
+          <input type="email" id="email" name="email" required placeholder=" "
+                 class="peer w-full px-4 py-3 rounded-lg bg-white/20 text-white placeholder-transparent
+                        focus:outline-none focus:ring-2 focus:ring-pink-400 transition" />
           <label for="email"
-            class="absolute left-4 top-1/2 -translate-y-1/2 text-gray-200 pointer-events-none transition-all
-                   peer-placeholder-shown:top-1/2 peer-placeholder-shown:text-base peer-placeholder-shown:text-gray-200
-                   peer-focus:top-2 peer-focus:-translate-y-0 peer-focus:text-sm peer-focus:text-pink-400">
+                 class="absolute left-4 top-1/2 -translate-y-1/2 text-gray-200 transition-all pointer-events-none
+                        peer-placeholder-shown:top-1/2 peer-placeholder-shown:text-base
+                        peer-focus:top-2 peer-focus:text-sm peer-focus:text-pink-300">
             Email
           </label>
         </div>
 
-        <!-- Password Field w/ Toggle -->
+        <!-- Password -->
         <div class="relative">
-          <input type="password" id="password" name="password" placeholder=" " required
-            class="peer w-full px-4 py-3 rounded-lg bg-white bg-opacity-20 placeholder-transparent focus:outline-none focus:ring-2 focus:ring-pink-400 transition text-white" />
+          <input type="password" id="password" name="password" required placeholder=" "
+                 class="peer w-full px-4 py-3 rounded-lg bg-white/20 text-white placeholder-transparent
+                        focus:outline-none focus:ring-2 focus:ring-pink-400 transition" />
           <label for="password"
-            class="absolute left-4 top-1/2 -translate-y-1/2 text-gray-200 pointer-events-none transition-all
-                   peer-placeholder-shown:top-1/2 peer-placeholder-shown:text-base peer-placeholder-shown:text-gray-200
-                   peer-focus:top-2 peer-focus:-translate-y-0 peer-focus:text-sm peer-focus:text-pink-400">
+                 class="absolute left-4 top-1/2 -translate-y-1/2 text-gray-200 transition-all pointer-events-none
+                        peer-placeholder-shown:top-1/2 peer-placeholder-shown:text-base
+                        peer-focus:top-2 peer-focus:text-sm peer-focus:text-pink-300">
             Password
           </label>
           <button type="button" id="togglePassword"
-            class="absolute right-4 top-1/2 -translate-y-1/2 text-gray-200 hover:text-white transition">
+                  class="absolute right-4 top-1/2 -translate-y-1/2 text-gray-200 hover:text-white transition">
             👁️
           </button>
         </div>
 
-        <input type="hidden" name="csrfToken" value="" />
+        <!-- CSRF Token -->
+        <input type="hidden" name="csrfToken" id="csrfField" />
 
-        <!-- Submit Button -->
+        <!-- Submit -->
         <button type="submit"
-          class="w-full py-3 bg-pink-500 rounded-xl text-white font-semibold transition-transform transform hover:scale-105 hover:shadow-lg">
+                class="w-full py-3 bg-pink-500 rounded-xl text-white font-semibold
+                       transition-transform hover:scale-105 hover:shadow-lg">
           Log In
         </button>
       </form>
@@ -93,26 +94,28 @@
         <span class="flex-grow border-t border-gray-300"></span>
       </div>
 
-      <!-- Strava Connect -->
+      <!-- Strava OAuth -->
       <a href="https://www.strava.com/oauth/authorize?client_id=161922&response_type=code&redirect_uri=https://melodious-queijadas-d749fe.netlify.app/.netlify/functions/strava-auth&approval_prompt=auto&scope=activity:read_all"
-         class="block w-full text-center py-3 bg-white bg-opacity-20 rounded-xl text-white font-medium hover:bg-opacity-30 transition">
+         class="block w-full text-center py-3 bg-white/20 text-white rounded-xl hover:bg-white/30 transition">
         🚴 Connect with Strava
       </a>
     </div>
   </div>
 
-  <!-- Password Toggle Script -->
-  <script>
-    document.addEventListener('DOMContentLoaded', () => {
-      const pwd = document.getElementById('password');
-      const btn = document.getElementById('togglePassword');
-      if (pwd && btn) {
-        btn.addEventListener('click', () => {
-          const show = pwd.type === 'password';
-          pwd.type = show ? 'text' : 'password';
-          btn.textContent = show ? '🙈' : '👁️';
-        });
-      }
+  <!-- Inline JS (allowed by nonce) -->
+  <script nonce="rnd123">
+    // CSRF generation
+    const token = crypto.randomUUID();
+    document.cookie = `csrfToken=${token}; Path=/; Secure; SameSite=Strict`;
+    document.getElementById('csrfField').value = token;
+
+    // Password eye toggle
+    const pwd = document.getElementById('password');
+    const btn = document.getElementById('togglePassword');
+    btn.addEventListener('click', () => {
+      const show = pwd.type === 'password';
+      pwd.type = show ? 'text' : 'password';
+      btn.textContent = show ? '🙈' : '👁️';
     });
   </script>
 </body>
