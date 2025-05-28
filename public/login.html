@@ -1,24 +1,56 @@
-<!-- LOGIN SECTION -->
-<div class="w-full max-w-md mx-auto bg-white bg-opacity-10 p-8 rounded-2xl shadow-lg backdrop-blur-md">
-  <h1 class="text-2xl font-bold mb-4 text-center">Log In to $WATT</h1>
-  <form action="/api/login" method="POST" class="space-y-5">
-    <div>
-      <label for="email" class="block mb-1 font-medium">Email</label>
-      <input type="email" id="email" name="email" required
-             class="w-full px-4 py-2 rounded-lg bg-white bg-opacity-20 focus:ring-2 focus:ring-pink-400"
-             placeholder="you@example.com" />
-    </div>
-    <div>
-      <label for="password" class="block mb-1 font-medium">Password</label>
-      <input type="password" id="password" name="password" required
-             class="w-full px-4 py-2 rounded-lg bg-white bg-opacity-20 focus:ring-2 focus:ring-pink-400"
-             placeholder="********" />
-    </div>
-    <input type="hidden" name="csrfToken" value="{{csrfToken}}">
-    <button type="submit"
-            class="w-full py-3 bg-pink-500 rounded-xl hover:bg-pink-600 text-white font-semibold transition">
-      Log In
-    </button>
-  </form>
-</div>
-<!-- END LOGIN SECTION -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Log In — $WATT</title>
+
+  <!-- Security: CSP & Referrer -->
+  <meta http-equiv="Content-Security-Policy" content="
+    default-src 'self';
+    script-src 'self' https://cdn.tailwindcss.com https://cdn.jsdelivr.net/npm/ethers@5/dist/ethers.min.js;
+    style-src 'self' https://fonts.googleapis.com https://cdn.tailwindcss.com;
+    font-src 'self' https://fonts.gstatic.com;
+    img-src 'self' data:;
+    connect-src 'self' https://www.googleapis.com https://*.firebaseio.com https://goerli.infura.io;
+  ">
+  <meta name="referrer" content="no-referrer">
+
+  <!-- Tailwind & Font -->
+  <script src="https://cdn.tailwindcss.com" crossorigin="anonymous"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Rubik:wght@400;700&display=swap" rel="stylesheet" crossorigin="anonymous">
+
+  <style nonce="rnd123">
+    body { font-family: 'Rubik', sans-serif; }
+  </style>
+</head>
+
+<body class="flex items-center justify-center min-h-screen bg-gradient-to-br from-indigo-600 to-purple-600 text-gray-100">
+  <div class="w-full max-w-md bg-white bg-opacity-10 p-8 rounded-2xl shadow-lg backdrop-blur-md">
+    <!-- LOGIN SECTION -->
+    <h1 class="text-3xl font-bold mb-6 text-center">Log In to $WATT</h1>
+    <form action="/api/login" method="POST" class="space-y-5">
+      <div>
+        <label for="email" class="block mb-1 font-medium">Email</label>
+        <input type="email" id="email" name="email" required
+               class="w-full px-4 py-2 rounded-lg bg-white bg-opacity-20 focus:outline-none focus:ring-2 focus:ring-pink-400"
+               placeholder="you@example.com" />
+      </div>
+      <div>
+        <label for="password" class="block mb-1 font-medium">Password</label>
+        <input type="password" id="password" name="password" required
+               class="w-full px-4 py-2 rounded-lg bg-white bg-opacity-20 focus:outline-none focus:ring-2 focus:ring-pink-400"
+               placeholder="********" />
+      </div>
+      <input type="hidden" name="csrfToken" value="{{csrfToken}}">
+      <button type="submit"
+              class="w-full py-3 bg-pink-500 rounded-xl hover:bg-pink-600 text-white font-semibold transition">
+        Log In
+      </button>
+    </form>
+    <!-- END LOGIN SECTION -->
+  </div>
+</body>
+</html>
