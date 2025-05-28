@@ -18,7 +18,6 @@ exports.handler = async function(event, context) {
   const client_secret = 'a8123e04f2a9599b4c2600b4cf567e833448aced';
 
   try {
-    // Step 1: Get access token
     const tokenRes = await axios.post('https://www.strava.com/oauth/token', {
       client_id,
       client_secret,
@@ -29,7 +28,6 @@ exports.handler = async function(event, context) {
     const access_token = tokenRes.data.access_token;
     const athlete_id = tokenRes.data.athlete.id;
 
-    // Step 2: Get activities
     const activitiesRes = await axios.get('https://www.strava.com/api/v3/athlete/activities', {
       headers: { Authorization: `Bearer ${access_token}` }
     });
@@ -43,11 +41,9 @@ exports.handler = async function(event, context) {
       totalWattHours += (avgWatts * duration) / 3600;
     });
 
-    const totalWATT = (totalWattHours / 1000).toFixed(2); // conversion rate
+    const totalWATT = (totalWattHours / 1000).toFixed(2);
 
-    // Step 3: Store in Firestore
-    const ref = db.collection('users').doc(String(athlete_id));
-    await ref.set({
+    await db.collection('users').doc(String(athlete_id)).set({
       athlete_id,
       watt_hours: totalWattHours.toFixed(2),
       watt_token: totalWATT,
@@ -55,7 +51,6 @@ exports.handler = async function(event, context) {
       activities_count: activities.length
     });
 
-    // Step 4: Redirect back to front-end
     return {
       statusCode: 302,
       headers: {
