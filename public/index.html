@@ -1,96 +1,170 @@
+const axios = require('axios');
+
+exports.handler = async function(event) {
+  const code = event.queryStringParameters.code;
+  const client_id = '161922';
+  const client_secret = 'a8123e04f2a9599b4c2600b4cf567e833448aced';
+
+  try {
+    // Exchange code for Strava access token
+    const tokenRes = await axios.post('https://www.strava.com/oauth/token', {
+      client_id,
+      client_secret,
+      code,
+      grant_type: 'authorization_code'
+    });
+    const access_token = tokenRes.data.access_token;
+    const athlete_id = tokenRes.data.athlete.id;
+
+    // Fetch last 5 activities for speed
+    const activitiesRes = await axios.get(
+      'https://www.strava.com/api/v3/athlete/activities?per_page=5',
+      { headers: { Authorization: `Bearer ${access_token}` } }
+    );
+
+    // Calculate total watt-hours
+    let totalWh = 0;
+    activitiesRes.data.forEach(activity => {
+      const avgWatts = activity.average_watts || 0;
+      const durationSec = activity.elapsed_time || 0;
+      totalWh += (avgWatts * durationSec) / 3600;
+    });
+    const totalWATT = (totalWh / 10).toFixed(2);
+    const count = activitiesRes.data.length;
+
+    // Redirect back with query params
+    const redirectUrl =
+      `https://melodious-queijadas-d749fe.netlify.app/` +
+      `?athlete_id=${athlete_id}` +
+      `&watt_token=${totalWATT}` +
+      `&activities_count=${count}`;
+
+    return {
+      statusCode: 302,
+      headers: { Location: redirectUrl },
+      body: ''
+    };
+
+  } catch (err) {
+    return {
+      statusCode: 500,
+      body: JSON.stringify({ error: err.message })
+    };
+  }
+};
+
+// ===========================
+// 📄 public/index.html (Homepage)
+// ===========================
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>$WATT — Ride to Earn</title>
-  <style>
-    :root {
-      --primary: #00ff7f;
-      --accent: #00e0ff;
-      --background: #0a0a0a;
-      --text: #f2f2f2;
-      --card: #1a1a1a;
-      --shadow: rgba(0,0,0,0.4);
-    }
-    * { box-sizing: border-box; margin: 0; padding: 0; }
-    body { font-family: 'Segoe UI', sans-serif; background: var(--background); color: var(--text); }
-    .container { max-width: 1200px; margin: auto; padding: 2rem; }
-    header { text-align: center; padding: 4rem 1rem; }
-    header h1 { font-size: 3rem; color: var(--primary); margin-bottom: 1rem; }
-    header p { font-size: 1.2rem; max-width: 600px; margin: auto 0 2rem; }
-    .value-props { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px,1fr)); gap: 1.5rem; margin: 3rem 0; }
-    .prop-card { background: var(--card); padding: 1.5rem; border-radius: 12px; box-shadow: 0 4px 20px var(--shadow); text-align: center; }
-    .prop-card h3 { color: var(--accent); margin-bottom: 1rem; }
-    .prop-card p { font-size: 0.95rem; }
-    .diagram { display: block; max-width: 800px; margin: 2rem auto; }
-    .how-it-works { margin: 4rem 0; }
-    .how-it-works h2 { text-align: center; color: var(--primary); margin-bottom: 1.5rem; }
-    .steps { display: flex; flex-wrap: wrap; gap: 1rem; justify-content: center; }
-    .step { flex: 1 1 200px; background: var(--card); padding: 1rem; border-radius: 10px; box-shadow: 0 2px 10px var(--shadow); }
-    .step h4 { margin-bottom: 0.5rem; color: var(--accent); }
-    .step p { font-size: 0.9rem; }
-    #connect { text-align: center; margin: 4rem 0; }
-    .button { display: inline-block; background: #000; color: var(--primary); border: 2px solid var(--primary); padding: 1rem 2.5rem; border-radius: 999px; text-decoration: none; font-weight: bold; transition: transform 0.3s ease; }
-    .button:hover { transform: scale(1.05); background: var(--primary); color: #000; }
-    footer { text-align: center; padding: 2rem 1rem; font-size: 0.8rem; color: #888; }
-  </style>
+  <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-  <header>
-    <h1>Ride. Earn. Repeat.</h1>
-    <p>Power your rides into $WATT — the world's first human-powered meme coin verified by real wattage.</p>
-    <img src="https://via.placeholder.com/800x300?text=Proof+of+Wattage+Flow" alt="Ride → Sync → Mint → Flex" class="diagram">
-  </header>
   <div class="container">
-    <section class="value-props">
-      <div class="prop-card">
-        <h3>Authentic Mining</h3>
-        <p>Every token comes from genuine pedal power tracked by smart meters.</p>
+    <header>
+      <h1>Ride. Earn. Repeat.</h1>
+      <p>Welcome back! Here's your real-time dashboard.</p>
+    </header>
+    <section id="dashboard-stats">
+      <div class="stat-card">
+        <h3>$WATT Balance</h3>
+        <p id="watt-display">Loading...</p>
       </div>
-      <div class="prop-card">
-        <h3>Instant Rewards</h3>
-        <p>Convert 10 watt-hours into 1 $WATT instantly with our Proof-of-Wattage protocol.</p>
-      </div>
-      <div class="prop-card">
-        <h3>Global Leaderboard</h3>
-        <p>Compete with riders worldwide, earn badges, and climb the charts.</p>
-      </div>
-      <div class="prop-card">
-        <h3>Partner Ecosystem</h3>
-        <p>Redeem $WATT for merch, challenges, and exclusive partner perks.</p>
+      <div class="stat-card">
+        <h3>Rides Tracked</h3>
+        <p id="rides-count">Loading...</p>
       </div>
     </section>
-    <section class="how-it-works">
-      <h2>How It Works</h2>
-      <div class="steps">
-        <div class="step">
-          <h4>1. Track Power</h4>
-          <p>Ride with a compatible power meter to capture your wattage data.</p>
-        </div>
-        <div class="step">
-          <h4>2. Sync Data</h4>
-          <p>Connect with Strava to securely fetch your ride stats.</p>
-        </div>
-        <div class="step">
-          <h4>3. Mint $WATT</h4>
-          <p>Our backend converts your watt-hours into $WATT tokens.</p>
-        </div>
-        <div class="step">
-          <h4>4. Flex & Redeem</h4>
-          <p>Show off on the leaderboard or spend tokens on rewards.</p>
-        </div>
-      </div>
+    <section id="leaderboard">
+      <h2>Global Leaderboard</h2>
+      <ol id="leader-list">
+        <!-- Filled dynamically -->
+      </ol>
     </section>
-    <section id="connect">
-      <h2>Ready to Ride?</h2>
+    <section id="profile-features">
+      <h2>Your Account</h2>
+      <ul>
+        <li><a href="/login.html">Edit Profile</a></li>
+        <li><a href="#ride-history">Ride History</a></li>
+        <li><a href="#settings">Settings</a></li>
+        <li><a href="#rewards">Rewards & Merch</a></li>
+      </ul>
+    </section>
+  </div>
+  <script type="module">
+    import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js';
+    import { getFirestore, doc, setDoc, getDoc } from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js';
+    const config = { apiKey:'AIzaSyAuklQzaRb5kqqn3WiwqLQDOvFo6JdYgMA', authDomain:'wattcoinstorage.firebaseapp.com', projectId:'wattcoinstorage' };
+    const app = initializeApp(config), db = getFirestore(app);
+    const params = new URLSearchParams(window.location.search);
+    const athleteId = params.get('athlete_id') || localStorage.getItem('athlete_id');
+    const wattToken = params.get('watt_token');
+    const count = params.get('activities_count');
+    if (athleteId && wattToken && count) {
+      setDoc(doc(db, 'users', athleteId), { athlete_id: athleteId, watt_token: wattToken, activities_count: count, updated_at: new Date().toISOString() });
+      localStorage.setItem('athlete_id', athleteId);
+    }
+    if (athleteId) {
+      getDoc(doc(db, 'users', athleteId)).then(snap => {
+        if (snap.exists()) {
+          document.getElementById('watt-display').innerText = snap.data().watt_token + ' $WATT';
+          document.getElementById('rides-count').innerText = snap.data().activities_count;
+        }
+      });
+    }
+    // TODO: fetch and display leaderboard
+  </script>
+</body>
+</html>
+
+// ===========================
+// 📄 public/login.html (User Account Login)
+// ===========================
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Login — $WATT</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="container">
+    <header>
+      <h1>Welcome to $WATT</h1>
+      <p>Please log in to access your dashboard and track your $WATT earnings.</p>
+    </header>
+    <section id="login-form">
+      <form>
+        <div class="form-group">
+          <label for="email">Email</label>
+          <input type="email" id="email" placeholder="you@example.com" required>
+        </div>
+        <div class="form-group">
+          <label for="password">Password</label>
+          <input type="password" id="password" placeholder="********" required>
+        </div>
+        <button type="submit" class="button">Log In</button>
+      </form>
+      <p>Or continue with:</p>
       <a class="button" href="https://www.strava.com/oauth/authorize?client_id=161922&response_type=code&redirect_uri=https://melodious-queijadas-d749fe.netlify.app/.netlify/functions/strava-auth&approval_prompt=auto&scope=activity:read_all">
         🚴 Connect with Strava
       </a>
     </section>
+    <section id="extras">
+      <h2>Coming Soon</h2>
+      <ul>
+        <li>Ride History & Analytics</li>
+        <li>Profile & Avatar Customization</li>
+        <li>Achievements & Badges</li>
+        <li>Referral Program</li>
+      </ul>
+    </section>
   </div>
-  <footer>
-    🔥 $WATT — Powered by People. © 2025
-  </footer>
 </body>
 </html>
