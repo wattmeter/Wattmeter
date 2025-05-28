@@ -3,124 +3,12 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Log In — $WATT</title>
-  <!-- Strict CSP -->
-  <meta http-equiv="Content-Security-Policy"
-        content="
-          default-src 'self';
-          script-src  'self' 'nonce-rnd123';
-          style-src   'self' https://fonts.googleapis.com https://cdn.jsdelivr.net;
-          font-src    'self' https://fonts.gstatic.com;
-          img-src     'self' data:;
-          connect-src 'self' https://www.googleapis.com https://*.firebaseio.com;
-        " />
-  <meta name="referrer" content="no-referrer" />
-  <!-- Correct Tailwind link -->
+  <title>Tailwind Debug Test</title>
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/tailwindcss@3.4.4/tailwind.min.css" />
-  <!-- Google Fonts -->
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Rubik:wght@400;700&display=swap" rel="stylesheet" crossorigin="anonymous" />
-  <style>
-    body { font-family: 'Rubik', sans-serif; }
-  </style>
 </head>
-<body class="min-h-screen bg-gradient-to-br from-violet-500 to-indigo-600 text-gray-100 flex items-center justify-center">
-
-  <!-- DEBUG block: REMOVE WHEN STYLES WORK! -->
-  <div class="bg-red-500 text-white text-2xl font-bold p-4 mb-6 rounded-2xl text-center">
-    DEBUG: Tailwind loaded (should be RED)
+<body class="bg-gradient-to-br from-pink-500 to-yellow-400 min-h-screen flex items-center justify-center">
+  <div class="text-4xl text-black font-bold bg-white p-12 rounded-3xl shadow-2xl">
+    If you see a PINK-to-YELLOW gradient, TAILWIND WORKS!
   </div>
-  <!-- END DEBUG block -->
-
-  <div class="w-full max-w-md px-6">
-    <!-- Header -->
-    <header class="text-center mb-8">
-      <h1 class="text-4xl font-bold mb-2">Ride. Earn. Repeat.</h1>
-      <p class="text-lg opacity-90">Log in to track your $WATT balance and rides.</p>
-    </header>
-
-    <!-- Login Card -->
-    <div class="bg-gradient-to-br from-purple-600 to-pink-500 bg-opacity-40 p-8 rounded-2xl shadow-lg backdrop-blur-md">
-      <h2 class="text-2xl font-semibold mb-6 text-center text-white">Log In to $WATT</h2>
-
-      <form action="/.netlify/functions/login" method="POST" class="space-y-5">
-        <!-- Email -->
-        <div class="relative">
-          <input type="email" id="email" name="email" required placeholder=" "
-                 class="peer w-full px-4 py-3 rounded-lg bg-white/20 text-white placeholder-transparent
-                        focus:outline-none focus:ring-2 focus:ring-pink-400 transition" />
-          <label for="email"
-                 class="absolute left-4 top-1/2 -translate-y-1/2 text-gray-200 transition-all pointer-events-none
-                        peer-placeholder-shown:top-1/2 peer-placeholder-shown:text-base
-                        peer-focus:top-2 peer-focus:text-sm peer-focus:text-pink-300">
-            Email
-          </label>
-        </div>
-
-        <!-- Password -->
-        <div class="relative">
-          <input type="password" id="password" name="password" required placeholder=" "
-                 class="peer w-full px-4 py-3 rounded-lg bg-white/20 text-white placeholder-transparent
-                        focus:outline-none focus:ring-2 focus:ring-pink-400 transition" />
-          <label for="password"
-                 class="absolute left-4 top-1/2 -translate-y-1/2 text-gray-200 transition-all pointer-events-none
-                        peer-placeholder-shown:top-1/2 peer-placeholder-shown:text-base
-                        peer-focus:top-2 peer-focus:text-sm peer-focus:text-pink-300">
-            Password
-          </label>
-          <button type="button" id="togglePassword"
-                  class="absolute right-4 top-1/2 -translate-y-1/2 text-gray-200 hover:text-white transition">
-            👁️
-          </button>
-        </div>
-
-        <!-- CSRF Token -->
-        <input type="hidden" name="csrfToken" id="csrfField" />
-
-        <!-- Submit -->
-        <button type="submit"
-                class="w-full py-3 bg-pink-500 rounded-xl text-white font-semibold
-                       transition-transform hover:scale-105 hover:shadow-lg">
-          Log In
-        </button>
-      </form>
-
-      <!-- Divider -->
-      <div class="my-6 flex items-center text-gray-300">
-        <span class="flex-grow border-t border-gray-300"></span>
-        <span class="mx-4">or</span>
-        <span class="flex-grow border-t border-gray-300"></span>
-      </div>
-
-      <!-- Strava OAuth -->
-      <a href="https://www.strava.com/oauth/authorize?client_id=161922&response_type=code&redirect_uri=https://melodious-queijadas-d749fe.netlify.app/.netlify/functions/strava-auth&approval_prompt=auto&scope=activity:read_all"
-         class="block w-full text-center py-3 bg-white/20 text-white rounded-xl hover:bg-white/30 transition">
-        🚴 Connect with Strava
-      </a>
-    </div>
-  </div>
-
-  <!-- Inline JS (allowed by nonce) -->
-  <script nonce="rnd123">
-    // CSRF generation
-    const token = crypto.randomUUID();
-    const csrfField = document.getElementById('csrfField');
-    if(csrfField) {
-      document.cookie = `csrfToken=${token}; Path=/; Secure; SameSite=Strict`;
-      csrfField.value = token;
-    }
-
-    // Password eye toggle
-    const pwd = document.getElementById('password');
-    const btn = document.getElementById('togglePassword');
-    if (pwd && btn) {
-      btn.addEventListener('click', () => {
-        const show = pwd.type === 'password';
-        pwd.type = show ? 'text' : 'password';
-        btn.textContent = show ? '🙈' : '👁️';
-      });
-    }
-  </script>
 </body>
 </html>
