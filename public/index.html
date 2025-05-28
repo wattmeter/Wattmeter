@@ -5,47 +5,94 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>$WATT — Ride to Earn</title>
   <style>
-    :root { --primary: #00ff7f; --background: #0a0a0a; --text: #f2f2f2; --card: #1a1a1a; }
-    * { box-sizing: border-box; }
-    body { margin:0; font-family:'Segoe UI', sans-serif; background:var(--background); color:var(--text); }
-    .button { display:inline-block; background:#000; color:var(--primary); border:2px solid var(--primary);
-      padding:0.8rem 2rem; border-radius:999px; text-decoration:none; font-weight:bold; }
-    .button:hover { background:var(--primary); color:#000; }
-    header, section { max-width:800px; margin:2rem auto; padding:2rem; background:var(--card); border-radius:12px; }
-    header { text-align:center; }
-    h1 { margin:0; font-size:2.5rem; }
-    #connect { text-align:center; }
+    :root {
+      --primary: #00ff7f;
+      --accent: #00e0ff;
+      --background: #0a0a0a;
+      --text: #f2f2f2;
+      --card: #1a1a1a;
+      --shadow: rgba(0, 0, 0, 0.4);
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { background: var(--background); color: var(--text); font-family: 'Segoe UI', sans-serif; line-height: 1.5; }
+    header.hero { text-align: center; padding: 4rem 1rem; position: relative; }
+    header.hero h1 { font-size: 3rem; margin-bottom: 1rem; color: var(--primary); }
+    header.hero p { font-size: 1.2rem; max-width: 600px; margin: auto 0 2rem; }
+    .diagram { width: 100%; max-width: 800px; margin: 2rem auto; display: block; }
+    main { max-width: 1000px; margin: auto; padding: 2rem 1rem; }
+    .cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 1.5rem; }
+    .card { background: var(--card); padding: 1.5rem; border-radius: 12px; box-shadow: 0 4px 20px var(--shadow); text-align: center; }
+    .card h3 { color: var(--accent); margin-bottom: 0.5rem; }
+    .card p { font-size: 0.95rem; }
+    .how-it-works { margin-top: 3rem; }
+    .how-it-works h2 { text-align: center; color: var(--primary); margin-bottom: 1rem; }
+    .steps { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem; }
+    .step { background: var(--card); padding: 1rem; border-radius: 10px; box-shadow: 0 2px 10px var(--shadow); }
+    .step h4 { margin-bottom: 0.5rem; color: var(--accent); }
+    .step p { font-size: 0.9rem; }
+    #connect { text-align: center; margin: 4rem 0; }
+    #connect .button { font-size: 1.1rem; padding: 1rem 2.5rem; }
+    footer { text-align: center; padding: 2rem 1rem; font-size: 0.8rem; color: #888; }
   </style>
 </head>
 <body>
-  <header>
-    <h1>$WATT</h1>
-    <p>Mine crypto with your rides. Connect Strava to start earning.</p>
+  <header class="hero">
+    <h1>Ride. Earn. Repeat.</h1>
+    <p>Turn your pedal power into $WATT — the first meme coin backed by real human wattage.</p>
+    <img src="https://via.placeholder.com/800x300?text=Proof+of+Wattage+Diagram" alt="Diagram: Ride with power meter → sync data → mint $WATT" class="diagram">
   </header>
 
-  <section id="connect">
-    <h2>Connect with Strava</h2>
-    <a class="button" href="https://www.strava.com/oauth/authorize?client_id=161922&response_type=code&redirect_uri=https://melodious-queijadas-d749fe.netlify.app/.netlify/functions/strava-auth&approval_prompt=auto&scope=activity:read_all">
-      🚴 Connect Strava Now
-    </a>
-  </section>
+  <main>
+    <!-- Value Proposition Cards -->
+    <section class="cards">
+      <div class="card">
+        <h3>Real Effort</h3>
+        <p>Every watt you push is verified by your power meter and GPS data. No bots, no hacks.</p>
+      </div>
+      <div class="card">
+        <h3>Instant Minting</h3>
+        <p>Convert 10 watt-hours into 1 $WATT instantly through our Proof-of-Wattage protocol.</p>
+      </div>
+      <div class="card">
+        <h3>Build Community</h3>
+        <p>Join the ride-to-earn movement. Compete on leaderboards, share your progress, and earn rewards.</p>
+      </div>
+    </section>
 
-  <section id="your-balance">
-    <h2>Your $WATT</h2>
-    <div id="watt-display">Loading...</div>
-  </section>
+    <!-- How It Works -->
+    <section class="how-it-works">
+      <h2>How It Works</h2>
+      <div class="steps">
+        <div class="step">
+          <h4>1. Track</h4>
+          <p>Ride with a smart power meter or trainer to capture your wattage in real time.</p>
+        </div>
+        <div class="step">
+          <h4>2. Sync</h4>
+          <p>Link your ride to Strava — we fetch watt-hours, time, and GPS data securely.</p>
+        </div>
+        <div class="step">
+          <h4>3. Mint</h4>
+          <p>Proof-of-Wattage converts your effort into $WATT tokens on the blockchain.</p>
+        </div>
+        <div class="step">
+          <h4>4. Use & Flex</h4>
+          <p>Spend $WATT on merch, challenges, or flex your leaderboard status.</p>
+        </div>
+      </div>
+    </section>
 
-  <script type="module">
-    import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js';
-    import { getFirestore, doc, getDoc } from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js';
-    const config={apiKey:'AIzaSyAuklQzaRb5kqqn3WiwqLQDOvFo6JdYgMA',authDomain:'wattcoinstorage.firebaseapp.com',projectId:'wattcoinstorage'};
-    const app=initializeApp(config), db=getFirestore(app);
-    const athleteId=localStorage.getItem('athlete_id');
-    if(athleteId){ getDoc(doc(db,'users',athleteId)).then(snap=>{
-      document.getElementById('watt-display').innerText = snap.exists() ?
-        `You've earned ${snap.data().watt_token} $WATT from ${snap.data().activities_count} rides.` :
-        'No data found.';
-    }); }
-  </script>
+    <!-- Connect with Strava -->
+    <section id="connect">
+      <h2>Ready to Ride?</h2>
+      <a class="button" href="https://www.strava.com/oauth/authorize?client_id=161922&response_type=code&redirect_uri=https://melodious-queijadas-d749fe.netlify.app/.netlify/functions/strava-auth&approval_prompt=auto&scope=activity:read_all">
+        🚴 Connect with Strava
+      </a>
+    </section>
+  </main>
+
+  <footer>
+    🔥 $WATT — Powered by People. © 2025
+  </footer>
 </body>
 </html>
