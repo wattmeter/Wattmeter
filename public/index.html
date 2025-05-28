@@ -7,6 +7,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>$WATT — Ride to Earn</title>
   <!-- Tailwind + Font -->
+  <script src="https://cdn.jsdelivr.net/npm/ethers@5/dist/ethers.min.js"></script>
   <script src="https://cdn.tailwindcss.com"></script>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://fonts.googleapis.com/css2?family=Rubik:wght@400;700&display=swap" rel="stylesheet">
@@ -46,6 +47,11 @@
         <p class="text-3xl font-bold">🚴 Unlock</p>
       </div>
       <!-- REWARD CARD END -->
+      <button id="connectWallet" 
+        class="mt-6 px-6 py-3 bg-pink-500 rounded-xl hover:bg-pink-600">
+  Connect Wallet
+</button>
+
     </section>
     <!-- DASHBOARD SECTION END -->
 
@@ -175,5 +181,17 @@
     </section>
     <!-- COMING SOON END -->
   </div>
+  <script>
+  const btn = document.getElementById('connectWallet');
+  btn.addEventListener('click', async () => {
+    if (!window.ethereum) return alert('MetaMask not installed');
+    await window.ethereum.request({ method: 'eth_requestAccounts' });
+    const provider = new ethers.providers.Web3Provider(window.ethereum);
+    const signer = provider.getSigner();
+    const addr = await signer.getAddress();
+    btn.innerText = 'Connected: ' + addr.slice(0,6) + '…';
+  });
+</script>
+
 </body>
 </html>
