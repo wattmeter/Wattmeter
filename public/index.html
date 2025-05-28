@@ -161,6 +161,17 @@
         <input type="password" id="password" required class="w-full px-4 py-2 rounded-lg bg-white bg-opacity-20 focus:outline-none focus:ring-2 focus:ring-pink-400" placeholder="********" />
       </div>
       <button type="submit" class="w-full py-3 rounded-lg bg-pink-500 hover:bg-pink-600 font-semibold transition">Log In</button>
+exports.handler = async (event) => {
+  const token = createSessionTokenForUser(...);
+  return {
+    statusCode: 200,
+    headers: {
+      'Set-Cookie': `session=${token}; Path=/; Max-Age=86400; Secure; HttpOnly; SameSite=Strict`,
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({ success: true })
+  };
+};
     </form>
     <!-- LOGIN FORM END -->
     <p class="text-center mt-4">Or continue with:</p>
