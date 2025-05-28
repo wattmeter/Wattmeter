@@ -9,3 +9,5 @@
     font-src 'self' https://fonts.gstatic.com;
     img-src 'self' data:;
     connect-src 'self' https://www.googleapis.com https://*.firebaseio.com https://goerli.infura.io;
+/*
+  X-Frame-Options: DENY
