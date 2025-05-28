@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -27,88 +28,88 @@
   </style>
 </head>
 
-<body class="flex items-center justify-center min-h-screen bg-gradient-to-br from-indigo-600 to-purple-600 text-gray-100">
-  <div class="w-full max-w-md bg-white bg-opacity-10 p-8 rounded-2xl shadow-lg backdrop-blur-md">
-    <!-- LOGIN SECTION -->
-<!-- LOGIN SECTION -->
-<div class="w-full max-w-md mx-auto bg-white bg-opacity-10 p-8 rounded-2xl shadow-lg backdrop-blur-md">
-  <h1 class="text-3xl font-bold mb-6 text-center">Log In to $WATT</h1>
-  <form action="/api/login" method="POST" class="space-y-6">
-    <!-- Email Field -->
-    <div class="relative">
-      <input
-        type="email"
-        id="email"
-        name="email"
-        placeholder=" "
-        required
-        class="peer w-full px-4 py-3 rounded-lg bg-white bg-opacity-20 focus:outline-none focus:ring-2 focus:ring-pink-400 transition"
-      />
-      <label
-        for="email"
-        class="absolute left-4 top-1/2 -translate-y-1/2 text-gray-300 pointer-events-none 
-               transition-all 
-               peer-placeholder-shown:top-1/2 peer-placeholder-shown:text-base peer-placeholder-shown:text-gray-300
-               peer-focus:top-2 peer-focus:-translate-y-0 peer-focus:text-sm peer-focus:text-pink-400"
+<body class="min-h-screen bg-gradient-to-br from-violet-500 to-indigo-600 text-gray-100 flex items-center">
+  <div class="container mx-auto px-6 py-12">
+    <!-- MATCH INDEX HEADER STYLE -->
+    <header class="text-center mb-12">
+      <h1 class="text-4xl font-bold mb-4">Ride. Earn. Repeat.</h1>
+      <p class="text-lg opacity-90">Log in to track your $WATT balance and rides.</p>
+    </header>
+
+    <!-- LOGIN CARD -->
+    <div class="max-w-md mx-auto bg-white bg-opacity-10 p-8 rounded-2xl shadow-lg backdrop-blur-md">
+      <h2 class="text-3xl font-bold mb-6 text-center text-white">Log In to $WATT</h2>
+      <form action="/api/login" method="POST" class="space-y-6">
+        <!-- Email Field -->
+        <div class="relative">
+          <input
+            type="email" id="email" name="email" placeholder=" " required
+            class="peer w-full px-4 py-3 rounded-lg bg-white bg-opacity-20 focus:outline-none focus:ring-2 focus:ring-pink-400 transition text-white placeholder-transparent"
+          />
+          <label
+            for="email"
+            class="absolute left-4 top-1/2 -translate-y-1/2 text-gray-200 pointer-events-none transition-all 
+                   peer-placeholder-shown:top-1/2 peer-placeholder-shown:text-base peer-placeholder-shown:text-gray-200
+                   peer-focus:top-2 peer-focus:-translate-y-0 peer-focus:text-sm peer-focus:text-pink-400"
+          >Email</label>
+        </div>
+
+        <!-- Password Field w/ Toggle -->
+        <div class="relative">
+          <input
+            type="password" id="password" name="password" placeholder=" " required
+            class="peer w-full px-4 py-3 rounded-lg bg-white bg-opacity-20 focus:outline-none focus:ring-2 focus:ring-pink-400 transition text-white placeholder-transparent"
+          />
+          <label
+            for="password"
+            class="absolute left-4 top-1/2 -translate-y-1/2 text-gray-200 pointer-events-none transition-all 
+                   peer-placeholder-shown:top-1/2 peer-placeholder-shown:text-base peer-placeholder-shown:text-gray-200
+                   peer-focus:top-2 peer-focus:-translate-y-0 peer-focus:text-sm peer-focus:text-pink-400"
+          >Password</label>
+          <button
+            type="button" id="togglePassword"
+            class="absolute right-4 top-1/2 -translate-y-1/2 text-gray-200 hover:text-white transition"
+          >👁️</button>
+        </div>
+
+        <!-- CSRF Token (hidden) -->
+        <input type="hidden" name="csrfToken" value="{{csrfToken}}" />
+
+        <!-- Submit Button -->
+        <button
+          type="submit"
+          class="w-full py-3 bg-pink-500 rounded-xl text-white font-semibold transition transform hover:scale-105 hover:shadow-lg"
+        >
+          Log In
+        </button>
+      </form>
+
+      <!-- OR DIVIDER -->
+      <div class="my-6 flex items-center text-gray-300">
+        <span class="flex-grow border-t border-gray-300"></span>
+        <span class="mx-4">or</span>
+        <span class="flex-grow border-t border-gray-300"></span>
+      </div>
+
+      <!-- STRAVA CONNECT -->
+      <a
+        href="https://www.strava.com/oauth/authorize?client_id=161922&response_type=code&redirect_uri=https://melodious-queijadas-d749fe.netlify.app/.netlify/functions/strava-auth&approval_prompt=auto&scope=activity:read_all"
+        class="block w-full text-center py-3 bg-white bg-opacity-20 rounded-xl hover:bg-opacity-30 transition font-medium text-white"
       >
-        Email
-      </label>
+        🚴 Connect with Strava
+      </a>
     </div>
-
-    <!-- Password Field w/ Toggle -->
-    <div class="relative">
-      <input
-        type="password"
-        id="password"
-        name="password"
-        placeholder=" "
-        required
-        class="peer w-full px-4 py-3 rounded-lg bg-white bg-opacity-20 focus:outline-none focus:ring-2 focus:ring-pink-400 transition"
-      />
-      <label
-        for="password"
-        class="absolute left-4 top-1/2 -translate-y-1/2 text-gray-300 pointer-events-none 
-               transition-all 
-               peer-placeholder-shown:top-1/2 peer-placeholder-shown:text-base peer-placeholder-shown:text-gray-300
-               peer-focus:top-2 peer-focus:-translate-y-0 peer-focus:text-sm peer-focus:text-pink-400"
-      >
-        Password
-      </label>
-      <button
-        type="button"
-        id="togglePassword"
-        class="absolute right-4 top-1/2 -translate-y-1/2 text-gray-300 hover:text-white transition"
-      >
-        👁️
-      </button>
-    </div>
-
-    <!-- CSRF Token (hidden) -->
-    <input type="hidden" name="csrfToken" value="{{csrfToken}}" />
-
-    <!-- Submit Button -->
-    <button
-      type="submit"
-      class="w-full py-3 bg-pink-500 rounded-xl text-white font-semibold transition 
-             transform hover:scale-105 hover:shadow-lg"
-    >
-      Log In
-    </button>
-  </form>
-</div>
-
-<!-- Password Toggle Script -->
-<script>
-  const pwdInput = document.getElementById('password');
-  const toggleBtn = document.getElementById('togglePassword');
-  toggleBtn.addEventListener('click', () => {
-    const isPwd = pwdInput.getAttribute('type') === 'password';
-    pwdInput.setAttribute('type', isPwd ? 'text' : 'password');
-    toggleBtn.textContent = isPwd ? '🙈' : '👁️';
-  });
-</script>
-
-    <!-- END LOGIN SECTION -->
   </div>
+
+  <!-- Password Toggle Script -->
+  <script>
+    const pwdInput = document.getElementById('password');
+    const toggleBtn = document.getElementById('togglePassword');
+    toggleBtn.addEventListener('click', () => {
+      const isPwd = pwdInput.getAttribute('type') === 'password';
+      pwdInput.setAttribute('type', isPwd ? 'text' : 'password');
+      toggleBtn.textContent = isPwd ? '🙈' : '👁️';
+    });
+  </script>
 </body>
 </html>
