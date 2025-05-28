@@ -134,3 +134,9 @@ exports.handler = async function(event, context) {
     };
   }
 };
+return {
+  statusCode: 302,
+  headers: {
+    Location: `https://YOUR-NETLIFY-SITE.netlify.app/?athlete_id=${athlete_id}`
+  },
+};
