@@ -5,15 +5,23 @@
   <!-- INDEX.HTML - HEADER START -->
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <!-- SECURITY HEAD START -->
+  <!-- Content Security Policy: allow only self and trusted CDNs, block inline scripts/styles -->
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' https://cdn.jsdelivr.net https://cdn.tailwindcss.com https://cdn.jsdelivr.net/npm/ethers@5/dist/ethers.min.js; style-src 'self' https://fonts.googleapis.com https://cdn.tailwindcss.com; img-src 'self' data:; connect-src 'self' https://www.googleapis.com https://*.firebaseio.com https://goerli.infura.io; font-src 'self' https://fonts.gstatic.com;">
+  <!-- Referrer policy -->
+  <meta name="referrer" content="no-referrer">
+  <!-- Preconnect/manage CORS for fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <!-- SECURITY HEAD END -->
+
   <title>$WATT — Ride to Earn</title>
   <!-- Tailwind + Font -->
-  <script src="https://cdn.tailwindcss.com"></script>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link href="https://fonts.googleapis.com/css2?family=Rubik:wght@400;700&display=swap" rel="stylesheet">
-  <style>body { font-family: 'Rubik', sans-serif; }</style>
+  <script src="https://cdn.tailwindcss.com" integrity="" crossorigin="anonymous"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Rubik:wght@400;700&display=swap" rel="stylesheet" integrity="" crossorigin="anonymous">
+  <style nonce="random123">body { font-family: 'Rubik', sans-serif; }</style>
   <!-- INDEX.HTML - HEADER END -->
-  <!-- ETHERS.JS FOR WEB3 -->
-  <script src="https://cdn.jsdelivr.net/npm/ethers@5/dist/ethers.min.js"></script>
 </head>
 <body class="min-h-screen bg-gradient-to-br from-violet-500 to-indigo-600 text-gray-100">
   <div class="container mx-auto px-6 py-12">
@@ -27,13 +35,13 @@
       <!-- BALANCE CARD START -->
       <div class="bg-white bg-opacity-10 p-6 rounded-2xl shadow-lg backdrop-blur-md">
         <h3 class="text-xl font-semibold mb-2">$WATT Balance</h3>
-        <p id="watt-display" class="text-3xl font-bold animate-pulse">0 $WATT</p>
+        <p id="watt-display" class="text-3xl font-bold">0 $WATT</p>
       </div>
       <!-- BALANCE CARD END -->
       <!-- RIDES CARD START -->
       <div class="bg-white bg-opacity-10 p-6 rounded-2xl shadow-lg backdrop-blur-md">
         <h3 class="text-xl font-semibold mb-2">Rides Tracked</h3>
-        <p id="rides-count" class="text-3xl font-bold animate-pulse">Loading...</p>
+        <p id="rides-count" class="text-3xl font-bold">Loading...</p>
       </div>
       <!-- RIDES CARD END -->
       <!-- ACHIEVEMENTS CARD START -->
@@ -53,10 +61,10 @@
 
     <!-- CONNECT & BALANCE BUTTONS -->
     <div class="flex flex-col items-center space-y-4">
-      <button id="connectWallet" class="mt-6 px-6 py-3 bg-pink-500 rounded-xl hover:bg-pink-600">
+      <button id="connectWallet" class="mt-6 px-6 py-3 bg-pink-500 rounded-xl hover:bg-pink-600" type="button">
         Connect Wallet
       </button>
-      <button id="showBalance" class="px-6 py-3 bg-indigo-500 rounded-xl hover:bg-indigo-600">
+      <button id="showBalance" class="px-6 py-3 bg-indigo-500 rounded-xl hover:bg-indigo-600" type="button">
         Show WATT Balance
       </button>
     </div>
@@ -83,33 +91,8 @@
     <!-- PROFILE SECTION END -->
   </div>
 
-  <!-- WEB3 SCRIPT FOR WALLET & BALANCE -->
-  <script>
-    let provider, signer, userAddress;
-    const connectBtn = document.getElementById('connectWallet');
-    const balanceBtn = document.getElementById('showBalance');
-
-    connectBtn.addEventListener('click', async () => {
-      if (!window.ethereum) return alert('MetaMask not installed');
-      await window.ethereum.request({ method: 'eth_requestAccounts' });
-      provider = new ethers.providers.Web3Provider(window.ethereum);
-      signer = provider.getSigner();
-      userAddress = await signer.getAddress();
-      connectBtn.innerText = 'Connected: ' + userAddress.slice(0,6) + '…';
-    });
-
-    balanceBtn.addEventListener('click', async () => {
-      if (!signer) return alert('Connect wallet first');
-      const wattAddress = 'YOUR_CONTRACT_ADDRESS_HERE';
-      const wattAbi = [
-        "function balanceOf(address) view returns (uint256)"
-      ];
-      const contract = new ethers.Contract(wattAddress, wattAbi, signer);
-      const raw = await contract.balanceOf(userAddress);
-      const formatted = ethers.utils.formatUnits(raw, 18);
-      document.getElementById('watt-display').innerText = formatted + ' $WATT';
-    });
-  </script>
+  <!-- WEB3 SCRIPT FOR WALLET & BALANCE (moved to external for CSP compliance) -->
+  <script src="/js/main.js" integrity="" crossorigin="anonymous" nonce="random123"></script>
 </body>
 </html>
 
@@ -121,27 +104,34 @@
   <!-- LOGIN.HTML - HEAD START -->
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Login — $WATT</title>
-  <script src="https://cdn.jsdelivr.net/npm/ethers@5/dist/ethers.min.js"></script>
-  <script src="https://cdn.tailwindcss.com"></script>
+
+  <!-- SECURITY HEAD START -->
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' https://cdn.jsdelivr.net https://cdn.tailwindcss.com https://cdn.jsdelivr.net/npm/ethers@5/dist/ethers.min.js; style-src 'self' https://fonts.googleapis.com https://cdn.tailwindcss.com; img-src 'self' data:;">
+  <meta name="referrer" content="no-referrer">
   <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link href="https://fonts.googleapis.com/css2?family=Rubik:wght@400;700&display=swap" rel="stylesheet">
-  <style>body { font-family: 'Rubik', sans-serif; }</style>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <!-- SECURITY HEAD END -->
+
+  <title>Login — $WATT</title>
+  <script src="https://cdn.tailwindcss.com" integrity="" crossorigin="anonymous"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Rubik:wght@400;700&display=swap" rel="stylesheet" integrity="" crossorigin="anonymous">
+  <style nonce="random123">body { font-family: 'Rubik', sans-serif; }</style>
   <!-- LOGIN.HTML - HEAD END -->
 </head>
 <body class="flex items-center justify-center min-h-screen bg-gradient-to-br from-indigo-600 to-purple-600 text-gray-100">
   <div class="w-full max-w-md bg-white bg-opacity-10 p-8 rounded-2xl shadow-lg backdrop-blur-md">
     <!-- LOGIN FORM START -->
     <h1 class="text-3xl font-bold mb-6 text-center">Welcome to $WATT</h1>
-    <form class="space-y-5">
+    <form class="space-y-5" action="/api/login" method="POST">
       <div>
         <label for="email" class="block mb-1 font-medium">Email</label>
-        <input type="email" id="email" required class="w-full px-4 py-2 rounded-lg bg-white bg-opacity-20 focus:outline-none focus:ring-2 focus:ring-pink-400" placeholder="you@example.com" />
+        <input type="email" id="email" name="email" required class="w-full px-4 py-2 rounded-lg bg-white bg-opacity-20 focus:outline-none focus:ring-2 focus:ring-pink-400" placeholder="you@example.com" />
       </div>
       <div>
         <label for="password" class="block mb-1 font-medium">Password</label>
-        <input type="password" id="password" required class="w-full px-4 py-2 rounded-lg bg-white bg-opacity-20 focus:outline-none focus:ring-2 focus:ring-pink-400" placeholder="********" />
+        <input type="password" id="password" name="password" required class="w-full px-4 py-2 rounded-lg bg-white bg-opacity-20 focus:outline-none focus:ring-2 focus:ring-pink-400" placeholder="********" />
       </div>
+      <input type="hidden" name="csrfToken" value="{{csrfToken}}">
       <button type="submit" class="w-full py-3 rounded-lg bg-pink-500 hover:bg-pink-600 font-semibold transition">Log In</button>
     </form>
     <!-- LOGIN FORM END -->
