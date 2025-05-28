@@ -3,42 +3,84 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>$WATT — Proof of Power</title>
+  <title>$WATT — Ride to Earn</title>
   <style>
+    :root {
+      --primary: #00ff7f;
+      --background: #111;
+      --text: #fff;
+      --secondary: #222;
+    }
+    * {
+      box-sizing: border-box;
+    }
     body {
-      font-family: sans-serif;
-      background: #111;
-      color: #fff;
       margin: 0;
-      padding: 0;
-      text-align: center;
+      font-family: 'Segoe UI', sans-serif;
+      background: var(--background);
+      color: var(--text);
+      line-height: 1.6;
     }
     header {
-      background: #0f0;
-      padding: 2rem;
+      background: var(--primary);
+      color: black;
+      padding: 4rem 2rem;
+      text-align: center;
     }
-    h1 {
+    header h1 {
       font-size: 3rem;
-      margin: 0;
+      margin-bottom: 0.5rem;
     }
-    section {
-      padding: 2rem;
-      max-width: 800px;
-      margin: auto;
+    header p {
+      font-size: 1.2rem;
+      margin-bottom: 1.5rem;
     }
     .button {
-      background: #0f0;
+      background: black;
+      color: var(--primary);
       padding: 1rem 2rem;
-      color: black;
-      text-decoration: none;
       font-weight: bold;
-      display: inline-block;
-      margin-top: 1rem;
+      text-decoration: none;
+      border: 2px solid var(--primary);
+      border-radius: 5px;
+    }
+    section {
+      padding: 3rem 2rem;
+      max-width: 900px;
+      margin: auto;
+    }
+    section h2 {
+      color: var(--primary);
+      margin-bottom: 1rem;
+    }
+    ul {
+      text-align: left;
+      padding-left: 1.5rem;
     }
     footer {
-      background: #222;
-      padding: 1rem;
+      background: var(--secondary);
+      padding: 2rem;
+      text-align: center;
       font-size: 0.9rem;
+    }
+    .leaderboard {
+      background: #1c1c1c;
+      padding: 1rem;
+      border-radius: 8px;
+      margin-top: 2rem;
+    }
+    .leaderboard h3 {
+      margin-bottom: 0.5rem;
+      color: var(--primary);
+    }
+    .leaderboard ol {
+      padding-left: 1.5rem;
+      text-align: left;
+    }
+    @media (max-width: 600px) {
+      header h1 {
+        font-size: 2rem;
+      }
     }
   </style>
 </head>
@@ -46,32 +88,43 @@
 
   <header>
     <h1>$WATT</h1>
-    <p>Backed by real power. Mined by legs.</p>
-    <a class="button" href="mailto:you@example.com">Contact Us</a>
+    <p>🚴‍♂️ The meme coin you can't fake — mined by your legs, not your GPU.</p>
+    <a class="button" href="#partners">Become a Partner</a>
   </header>
 
   <section>
     <h2>What is $WATT?</h2>
-    <p>$WATT is a meme coin backed by your actual bike wattage output. You ride. You generate power. You earn.</p>
+    <p>$WATT is a human-powered meme coin backed by real-world cycling wattage and GPS data. Every token minted represents real physical effort — not fake trading or speculation. You ride. You sweat. You earn.</p>
   </section>
 
   <section>
     <h2>How It Works</h2>
-    <ul style="text-align: left;">
-      <li>Ride your bike with a power meter or smart trainer</li>
-      <li>Your power + GPS data is verified</li>
-      <li>You earn $WATT based on watt-hours output</li>
+    <ul>
+      <li>💥 Strap on a power meter (Garmin, Wahoo, Stages — we read them all)</li>
+      <li>📍 Ride and track wattage + GPS via Strava or Garmin Connect</li>
+      <li>⛓️ Verified data feeds into our system to mint $WATT based on your output</li>
+      <li>🎁 Use your $WATT to unlock rewards, merch, challenges, and real-world perks</li>
     </ul>
   </section>
 
-  <section>
-    <h2>Partners Wanted</h2>
-    <p>Bike brands, power meter makers, health orgs — join the movement economy.</p>
-    <a class="button" href="mailto:you@example.com">Become a Partner</a>
+  <section class="leaderboard">
+    <h3>Top Riders This Week (Demo)</h3>
+    <ol>
+      <li>@Quadzilla — 3,200 Wh</li>
+      <li>@ChainGang — 2,870 Wh</li>
+      <li>@MomOnFixie — 2,450 Wh</li>
+    </ol>
+    <p><em>Real-time leaderboard integration coming soon...</em></p>
+  </section>
+
+  <section id="partners">
+    <h2>Partnerships Open Now</h2>
+    <p>Bike brands, power meter makers, fitness apps, health orgs, cities — join the movement economy. Plug into the future of human-powered incentives.</p>
+    <a class="button" href="mailto:you@example.com">Contact Us</a>
   </section>
 
   <footer>
-    <p>🚴 Powered by People | @2025 WattCoin Project</p>
+    <p>🔥 $WATT is built for the streets. © 2025 Powered by People.</p>
   </footer>
 
 </body>
