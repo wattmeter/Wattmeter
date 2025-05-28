@@ -142,6 +142,41 @@
 <body>
 
   <header>
+    <!-- Firebase Web SDK -->
+<script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+  import { getFirestore, doc, getDoc } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+
+  const firebaseConfig = {
+    apiKey: "AIzaSyAuklQzaRb5kqqn3WiwqLQDOvFo6JdYgMA",
+    authDomain: "wattcoinstorage.firebaseapp.com",
+    projectId: "wattcoinstorage",
+    storageBucket: "wattcoinstorage.firebasestorage.app",
+    messagingSenderId: "602389391177",
+    appId: "1:602389391177:web:3ed75f3ae32bfa108d9c98",
+    measurementId: "G-FBVDXX0P0W"
+  };
+
+  const app = initializeApp(firebaseConfig);
+  const db = getFirestore(app);
+
+  // Replace with the athlete ID from the backend response
+  const athleteId = localStorage.getItem("athlete_id");
+
+  if (athleteId) {
+    const docRef = doc(db, "users", athleteId);
+    getDoc(docRef).then((docSnap) => {
+      if (docSnap.exists()) {
+        const data = docSnap.data();
+        document.getElementById("watt-display").innerText =
+          `You've earned ${data.watt_token} $WATT from ${data.activities_count} rides. 🚴🔥`;
+      } else {
+        document.getElementById("watt-display").innerText = "No data found.";
+      }
+    });
+  }
+</script>
+
     <h1>$WATT</h1>
     <p>🚴‍♂️ The meme coin you can't fake — mined by your legs, not your GPU.</p>
     <a class="button" href="#partners">Become a Partner</a>
@@ -153,6 +188,9 @@
     <h2>What is $WATT?</h2>
     <p>$WATT is a human-powered meme coin backed by real-world cycling wattage and GPS data. Every token minted represents real physical effort — not fake trading or speculation. You ride. You sweat. You earn.</p>
   </section>
+<div id="watt-display" style="font-size: 1.2rem; font-weight: bold; padding-top: 20px;">
+  Loading your $WATT balance...
+</div>
 
 <section class="how-it-works">
   <h2>How It Works</h2>
