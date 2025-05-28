@@ -28,9 +28,9 @@ exports.handler = async function(event, context) {
     const access_token = tokenResponse.data.access_token;
     const athlete_id = tokenResponse.data.athlete.id;
 
-    // Fetch recent activities
+    // Fetch recent activities (limit to 10 for speed)
     const activitiesResponse = await axios.get(
-      'https://www.strava.com/api/v3/athlete/activities',
+      'https://www.strava.com/api/v3/athlete/activities?per_page=10',
       { headers: { Authorization: `Bearer ${access_token}` } }
     );
 
@@ -62,6 +62,7 @@ exports.handler = async function(event, context) {
       }
     };
   } catch (err) {
+    // If something fails, return error quickly
     return {
       statusCode: 500,
       body: JSON.stringify({ error: err.message })
