@@ -199,7 +199,70 @@
     <p>Bike brands, power meter makers, fitness apps, health orgs, cities — join the movement economy. Plug into the future of human-powered incentives.</p>
     <a class="button" href="mailto:you@example.com">Contact Us</a>
   </section>
+<section class="minting-simulator">
+  <h2>Mint Your $WATT</h2>
+  <p>Simulate your power: Enter watt-hours from your last ride to mint fake $WATT.</p>
+  <form id="mintForm">
+    <input type="number" id="mintInput" placeholder="Enter watt-hours (Wh)" required />
+    <button type="submit">Mint</button>
+  </form>
+  <div id="mintResult">💰 Wallet Balance: <strong>0</strong> $WATT</div>
+</section>
 
+<script>
+  let walletBalance = localStorage.getItem('wattWallet') || 0;
+
+  document.getElementById('mintResult').innerHTML = `💰 Wallet Balance: <strong>${walletBalance}</strong> $WATT`;
+
+  document.getElementById('mintForm').addEventListener('submit', function(e) {
+    e.preventDefault();
+    const inputWh = parseFloat(document.getElementById('mintInput').value);
+    if (isNaN(inputWh) || inputWh <= 0) {
+      alert('Enter a valid number of watt-hours!');
+      return;
+    }
+
+    const conversionRate = 10; // 10 Wh = 1 $WATT
+    const earned = (inputWh / conversionRate).toFixed(2);
+    walletBalance = (parseFloat(walletBalance) + parseFloat(earned)).toFixed(2);
+
+    localStorage.setItem('wattWallet', walletBalance);
+    document.getElementById('mintResult').innerHTML = `💰 Wallet Balance: <strong>${walletBalance}</strong> $WATT`;
+    document.getElementById('mintForm').reset();
+  });
+</script>
+
+<style>
+  .minting-simulator {
+    background: #1c1c1c;
+    padding: 2rem;
+    border-radius: 10px;
+    text-align: center;
+    margin-top: 2rem;
+  }
+  .minting-simulator input {
+    padding: 0.7rem;
+    font-size: 1rem;
+    width: 250px;
+    margin-right: 1rem;
+    border: none;
+    border-radius: 5px;
+  }
+  .minting-simulator button {
+    padding: 0.7rem 1.5rem;
+    background: #00ff7f;
+    color: black;
+    border: none;
+    border-radius: 5px;
+    font-weight: bold;
+    cursor: pointer;
+  }
+  #mintResult {
+    margin-top: 1.5rem;
+    font-size: 1.2rem;
+    color: #00ff7f;
+  }
+</style>
   <footer>
     <p>🔥 $WATT is built for the streets. © 2025 Powered by People.</p>
   </footer>
