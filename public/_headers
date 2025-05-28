@@ -1,2 +1,11 @@
 /*  
   Strict-Transport-Security: max-age=63072000; includeSubDomains; preload
+/*
+  # Allow only your own origin + the CDNs you use
+  Content-Security-Policy: 
+    default-src 'self';
+    script-src 'self' https://cdn.jsdelivr.net https://cdn.tailwindcss.com;
+    style-src 'self' https://fonts.googleapis.com https://cdn.tailwindcss.com;
+    font-src 'self' https://fonts.gstatic.com;
+    img-src 'self' data:;
+    connect-src 'self' https://www.googleapis.com https://*.firebaseio.com https://goerli.infura.io;
