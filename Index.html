@@ -7,333 +7,195 @@
   <style>
     :root {
       --primary: #00ff7f;
-      --background: #111;
-      --text: #fff;
-      --secondary: #222;
+      --accent: #00e0ff;
+      --background: #0a0a0a;
+      --text: #f2f2f2;
+      --card: #1a1a1a;
+      --shadow: rgba(0, 0, 0, 0.4);
     }
     * {
       box-sizing: border-box;
     }
     body {
       margin: 0;
-      font-family: 'Segoe UI', sans-serif;
+      font-family: 'Segoe UI', 'Roboto', sans-serif;
       background: var(--background);
       color: var(--text);
-      line-height: 1.6;
     }
     header {
-      background: var(--primary);
-      color: black;
+      background: linear-gradient(135deg, var(--primary), var(--accent));
+      color: #000;
       padding: 4rem 2rem;
       text-align: center;
+      border-bottom: 4px solid var(--primary);
     }
     header h1 {
-      font-size: 3rem;
-      margin-bottom: 0.5rem;
+      font-size: 3.5rem;
+      margin: 0 0 1rem;
     }
     header p {
-      font-size: 1.2rem;
-      margin-bottom: 1.5rem;
+      font-size: 1.25rem;
+      margin-bottom: 2rem;
     }
     .button {
-      background: black;
+      display: inline-block;
+      background: #000;
       color: var(--primary);
-      padding: 1rem 2rem;
-      font-weight: bold;
-      text-decoration: none;
       border: 2px solid var(--primary);
-      border-radius: 5px;
+      padding: 0.8rem 2rem;
+      font-size: 1rem;
+      font-weight: bold;
+      border-radius: 999px;
+      transition: all 0.3s ease;
+      text-decoration: none;
     }
-    section {
-      padding: 3rem 2rem;
-      max-width: 900px;
+    .button:hover {
+      background: var(--primary);
+      color: #000;
+      transform: scale(1.05);
+    }
+    main {
+      padding: 2rem;
+      max-width: 960px;
       margin: auto;
     }
-    section h2 {
+    section {
+      background: var(--card);
+      border-radius: 16px;
+      padding: 2rem;
+      margin-bottom: 2rem;
+      box-shadow: 0 4px 20px var(--shadow);
+    }
+    h2 {
       color: var(--primary);
+      margin-top: 0;
+    }
+    .steps, .leaderboard ol {
+      padding-left: 1rem;
+    }
+    .step {
       margin-bottom: 1rem;
     }
-    ul {
-      text-align: left;
-      padding-left: 1.5rem;
+    input, button {
+      font-size: 1rem;
+      padding: 0.75rem;
+      margin-top: 1rem;
+      border: none;
+      border-radius: 10px;
+    }
+    input {
+      width: calc(100% - 2rem);
+      max-width: 300px;
+    }
+    .leaderboard li {
+      margin-bottom: 0.5rem;
     }
     footer {
-      background: var(--secondary);
-      padding: 2rem;
       text-align: center;
-      font-size: 0.9rem;
+      padding: 2rem;
+      font-size: 0.875rem;
+      color: #aaa;
     }
-    .leaderboard {
-      background: #1c1c1c;
-      padding: 1rem;
-      border-radius: 8px;
-      margin-top: 2rem;
-    }
-    .leaderboard h3 {
-      margin-bottom: 0.5rem;
-      color: var(--primary);
-    }
-    .leaderboard ol {
-      padding-left: 1.5rem;
-      text-align: left;
-    }
-    @media (max-width: 600px) {
-      header h1 {
-        font-size: 2rem;
-      }
-    }
-    .how-it-works .steps {
-  display: grid;
-  gap: 2rem;
-  margin-top: 2rem;
-}
-
-.step {
-  background: #1c1c1c;
-  padding: 2rem;
-  border-radius: 10px;
-  opacity: 0;
-  transform: translateY(30px);
-  animation: fadeInUp 0.6s ease forwards;
-}
-
-.step:nth-child(1) { animation-delay: 0.1s; }
-.step:nth-child(2) { animation-delay: 0.3s; }
-.step:nth-child(3) { animation-delay: 0.5s; }
-.step:nth-child(4) { animation-delay: 0.7s; }
-
-@keyframes fadeInUp {
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-   .calculator {
-  background: #1c1c1c;
-  padding: 2rem;
-  border-radius: 10px;
-  margin-top: 2rem;
-  text-align: center;
-}
-.calculator input {
-  padding: 0.7rem;
-  font-size: 1rem;
-  width: 250px;
-  margin-right: 1rem;
-  border: none;
-  border-radius: 5px;
-}
-.calculator button {
-  padding: 0.7rem 1.5rem;
-  background: var(--primary);
-  color: black;
-  border: none;
-  border-radius: 5px;
-  font-weight: bold;
-  cursor: pointer;
-}
-#result {
-  margin-top: 1.5rem;
-  font-size: 1.2rem;
-  color: var(--primary);
-} 
   </style>
 </head>
 <body>
-<script>
-  // Step 1: Read athlete_id from URL
-  const urlParams = new URLSearchParams(window.location.search);
-  const athleteId = urlParams.get('athlete_id');
-
-  // Step 2: If found, store it for future use
-  if (athleteId) {
-    localStorage.setItem("athlete_id", athleteId);
-    console.log("Stored athlete_id:", athleteId);
-  }
-</script>
-
   <header>
-    <!-- Firebase Web SDK -->
-<script type="module">
-  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
-  import { getFirestore, doc, getDoc } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
-
-  const firebaseConfig = {
-    apiKey: "AIzaSyAuklQzaRb5kqqn3WiwqLQDOvFo6JdYgMA",
-    authDomain: "wattcoinstorage.firebaseapp.com",
-    projectId: "wattcoinstorage",
-    storageBucket: "wattcoinstorage.firebasestorage.app",
-    messagingSenderId: "602389391177",
-    appId: "1:602389391177:web:3ed75f3ae32bfa108d9c98",
-    measurementId: "G-FBVDXX0P0W"
-  };
-
-  const app = initializeApp(firebaseConfig);
-  const db = getFirestore(app);
-
-  // Replace with the athlete ID from the backend response
-  const athleteId = localStorage.getItem("athlete_id");
-
-  if (athleteId) {
-    const docRef = doc(db, "users", athleteId);
-    getDoc(docRef).then((docSnap) => {
-      if (docSnap.exists()) {
-        const data = docSnap.data();
-        document.getElementById("watt-display").innerText =
-          `You've earned ${data.watt_token} $WATT from ${data.activities_count} rides. 🚴🔥`;
-      } else {
-        document.getElementById("watt-display").innerText = "No data found.";
-      }
-    });
-  }
-</script>
-
     <h1>$WATT</h1>
-    <p>🚴‍♂️ The meme coin you can't fake — mined by your legs, not your GPU.</p>
-    <a class="button" href="#partners">Become a Partner</a>
+    <p>🚴‍♂️ Mint crypto with every ride. No miners, just muscles.</p>
+    <a class="button" href="#connect">Connect with Strava</a>
   </header>
-  <a href="https://www.strava.com/oauth/authorize?client_id=161922&response_type=code&redirect_uri=https://YOUR-NETLIFY-SITE.netlify.app/.netlify/functions/strava-auth&approval_prompt=auto&scope=activity:read_all">
-  Connect with Strava 🚴
-</a>
-  <section>
-    <h2>What is $WATT?</h2>
-    <p>$WATT is a human-powered meme coin backed by real-world cycling wattage and GPS data. Every token minted represents real physical effort — not fake trading or speculation. You ride. You sweat. You earn.</p>
-  </section>
-<div id="watt-display" style="font-size: 1.2rem; font-weight: bold; padding-top: 20px;">
-  Loading your $WATT balance...
-</div>
 
-<section class="how-it-works">
-  <h2>How It Works</h2>
-  <div class="steps">
-    <div class="step">
-      <h3>💥 Track Power</h3>
-      <p>Ride your bike with a power meter — Garmin, Wahoo, Stages, or smart trainer. We pull your real-time wattage data from verified apps.</p>
-    </div>
-    <div class="step">
-      <h3>📍 GPS Sync</h3>
-      <p>Pair your ride with GPS from Strava, Garmin Connect, or Apple Health. We log your real mileage, elevation, and hustle.</p>
-    </div>
-    <div class="step">
-      <h3>⛓️ Mint $WATT</h3>
-      <p>Your watt-hours are converted to crypto using our Proof-of-Watt protocol. No faking. No bots. Just power.</p>
-    </div>
-    <div class="step">
-      <h3>🎁 Use It or Flex It</h3>
-      <p>Spend $WATT on merch, NFTs, challenges — or hold it and flex your status as a pedal-powered miner.</p>
-    </div>
-  </div>
-</section>
-<section class="calculator">
-  <h2>Wattage-to-$WATT Calculator</h2>
-  <p>Enter your total ride output (in watt-hours) to see how much $WATT you could earn.</p>
+  <main>
+    <section id="connect">
+      <h2>Connect with Strava</h2>
+      <p>Start earning by syncing your rides. We pull wattage and GPS data to mint real $WATT into your wallet.</p>
+      <a class="button" href="https://www.strava.com/oauth/authorize?client_id=161922&response_type=code&redirect_uri=https://YOUR-NETLIFY-SITE.netlify.app/.netlify/functions/strava-auth&approval_prompt=auto&scope=activity:read_all">🚴 Connect Strava Now</a>
+    </section>
 
-  <form id="wattForm">
-    <input type="number" id="wattHours" placeholder="Enter watt-hours (Wh)" required />
-    <button type="submit">Calculate</button>
-  </form>
+    <section id="your-balance">
+      <h2>Your $WATT</h2>
+      <div id="watt-display">Loading your $WATT balance...</div>
+    </section>
 
-  <div id="result"></div>
-</section>
-  <section class="leaderboard">
-    <h3>Top Riders This Week (Demo)</h3>
-    <ol>
-      <li>@Quadzilla — 3,200 Wh</li>
-      <li>@ChainGang — 2,870 Wh</li>
-      <li>@MomOnFixie — 2,450 Wh</li>
-    </ol>
-    <p><em>Real-time leaderboard integration coming soon...</em></p>
-  </section>
+    <section id="how-it-works">
+      <h2>How It Works</h2>
+      <div class="step"><strong>1. Track Power:</strong> Ride with a power meter. We measure real wattage output.</div>
+      <div class="step"><strong>2. Sync GPS:</strong> We verify distance + effort with Strava data.</div>
+      <div class="step"><strong>3. Mint $WATT:</strong> Convert watt-hours into crypto. 10 Wh = 1 $WATT.</div>
+      <div class="step"><strong>4. Use or Flex:</strong> Spend it or save it. Compete, flex, or trade.</div>
+    </section>
 
-  <section id="partners">
-    <h2>Partnerships Open Now</h2>
-    <p>Bike brands, power meter makers, fitness apps, health orgs, cities — join the movement economy. Plug into the future of human-powered incentives.</p>
-    <a class="button" href="mailto:you@example.com">Contact Us</a>
-  </section>
-<section class="minting-simulator">
-  <h2>Mint Your $WATT</h2>
-  <p>Simulate your power: Enter watt-hours from your last ride to mint fake $WATT.</p>
-  <form id="mintForm">
-    <input type="number" id="mintInput" placeholder="Enter watt-hours (Wh)" required />
-    <button type="submit">Mint</button>
-  </form>
-  <div id="mintResult">💰 Wallet Balance: <strong>0</strong> $WATT</div>
-</section>
+    <section id="calculator">
+      <h2>Watt-to-$WATT Calculator</h2>
+      <form id="wattForm">
+        <input type="number" id="wattHours" placeholder="Enter watt-hours (Wh)" required />
+        <br />
+        <button type="submit" class="button">Calculate</button>
+      </form>
+      <div id="result"></div>
+    </section>
 
-<script>
-  let walletBalance = localStorage.getItem('wattWallet') || 0;
+    <section class="leaderboard">
+      <h2>Top Riders (Demo)</h2>
+      <ol>
+        <li>@Quadzilla — 3,200 Wh</li>
+        <li>@ChainGang — 2,870 Wh</li>
+        <li>@MomOnFixie — 2,450 Wh</li>
+      </ol>
+    </section>
+  </main>
 
-  document.getElementById('mintResult').innerHTML = `💰 Wallet Balance: <strong>${walletBalance}</strong> $WATT`;
-
-  document.getElementById('mintForm').addEventListener('submit', function(e) {
-    e.preventDefault();
-    const inputWh = parseFloat(document.getElementById('mintInput').value);
-    if (isNaN(inputWh) || inputWh <= 0) {
-      alert('Enter a valid number of watt-hours!');
-      return;
-    }
-
-    const conversionRate = 10; // 10 Wh = 1 $WATT
-    const earned = (inputWh / conversionRate).toFixed(2);
-    walletBalance = (parseFloat(walletBalance) + parseFloat(earned)).toFixed(2);
-
-    localStorage.setItem('wattWallet', walletBalance);
-    document.getElementById('mintResult').innerHTML = `💰 Wallet Balance: <strong>${walletBalance}</strong> $WATT`;
-    document.getElementById('mintForm').reset();
-  });
-</script>
-
-<style>
-  .minting-simulator {
-    background: #1c1c1c;
-    padding: 2rem;
-    border-radius: 10px;
-    text-align: center;
-    margin-top: 2rem;
-  }
-  .minting-simulator input {
-    padding: 0.7rem;
-    font-size: 1rem;
-    width: 250px;
-    margin-right: 1rem;
-    border: none;
-    border-radius: 5px;
-  }
-  .minting-simulator button {
-    padding: 0.7rem 1.5rem;
-    background: #00ff7f;
-    color: black;
-    border: none;
-    border-radius: 5px;
-    font-weight: bold;
-    cursor: pointer;
-  }
-  #mintResult {
-    margin-top: 1.5rem;
-    font-size: 1.2rem;
-    color: #00ff7f;
-  }
-</style>
   <footer>
-    <p>🔥 $WATT is built for the streets. © 2025 Powered by People.</p>
+    🔥 $WATT — Ride to Earn. Built for the streets. © 2025
   </footer>
-<script>
-  const form = document.getElementById('wattForm');
-  const resultDiv = document.getElementById('result');
 
-  form.addEventListener('submit', function(e) {
-    e.preventDefault();
-    const wh = parseFloat(document.getElementById('wattHours').value);
-    if (isNaN(wh) || wh <= 0) {
-      resultDiv.innerText = 'Please enter a valid watt-hour value.';
-      return;
+  <script>
+    const urlParams = new URLSearchParams(window.location.search);
+    const athleteId = urlParams.get('athlete_id');
+    if (athleteId) localStorage.setItem("athlete_id", athleteId);
+
+    let walletBalance = localStorage.getItem('wattWallet') || 0;
+    document.getElementById('mintResult')?.innerHTML = `💰 Wallet Balance: <strong>${walletBalance}</strong> $WATT`;
+
+    document.getElementById('wattForm')?.addEventListener('submit', function(e) {
+      e.preventDefault();
+      const wh = parseFloat(document.getElementById('wattHours').value);
+      const rate = 10;
+      const earned = (wh / rate).toFixed(2);
+      document.getElementById('result').innerText = `💰 You would earn approximately ${earned} $WATT`;
+    });
+  </script>
+
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+    import { getFirestore, doc, getDoc } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyAuklQzaRb5kqqn3WiwqLQDOvFo6JdYgMA",
+      authDomain: "wattcoinstorage.firebaseapp.com",
+      projectId: "wattcoinstorage",
+      storageBucket: "wattcoinstorage.firebasestorage.app",
+      messagingSenderId: "602389391177",
+      appId: "1:602389391177:web:3ed75f3ae32bfa108d9c98",
+      measurementId: "G-FBVDXX0P0W"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const db = getFirestore(app);
+    const athleteId = localStorage.getItem("athlete_id");
+
+    if (athleteId) {
+      const docRef = doc(db, "users", athleteId);
+      getDoc(docRef).then(docSnap => {
+        if (docSnap.exists()) {
+          const data = docSnap.data();
+          document.getElementById("watt-display").innerText =
+            `You've earned ${data.watt_token} $WATT from ${data.activities_count} rides. 🚴🔥`;
+        } else {
+          document.getElementById("watt-display").innerText = "No ride data found.";
+        }
+      });
     }
-
-    // Example rate: 10Wh = 1 $WATT
-    const rate = 10;
-    const earned = (wh / rate).toFixed(2);
-    resultDiv.innerText = `💰 You would earn approximately ${earned} $WATT`;
-  });
-</script>
+  </script>
 </body>
 </html>
